@@ -20,4 +20,4 @@ VitalClusters takes demographic and health survey data and automatically:
 
 - **Pipeline & Clustering:** Python, scikit-learn (K-Means, Silhouette analysis, PCA).
 - **Visualization:** Plotly, Streamlit.
-- **Requirements: Ensure Python 3.8+ is installed with necesarry libraries (pandas, numpy, sckit-learn, plotly, streamlit)
+- **Requirements: Ensure Python 3.8+ is installed with necessary libraries (pandas, numpy, scikit-learn, plotly, streamlit)
