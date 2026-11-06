@@ -24,7 +24,7 @@ ind = pd.DataFrame({"county": df["county"], "w": df["w"]})
 measured = alive & df["hw70"].between(-600, 600)
 ind["stunted"] = flag(df["hw70"] < -200, measured)
 
-eligible = alive & df["hw1"].between(12, 59) & df["h9"].isin([0, 1, 2, 3])
+eligible = alive & df["hw1"].between(12, 36) & df["h9"].isin([0, 1, 2, 3])
 ind["not_vaccinated_measles"] = flag(df["h9"] == 0, eligible)
 
 for col, name in [("h11", "diarrhea"), ("h22", "fever"), ("h31", "cough")]:

@@ -151,7 +151,7 @@ files are not included. They can be downloaded from the DHS Program after
 registering. This dashboard only uses county-level summaries.
 
 **Indicators.** Survey-weighted percentages per county for stunting, missing the
-measles vaccine (ages 12 to 59 months), households in the poorest 40%, rural
+measles vaccine (ages 12 to 36 months), households in the poorest 40%, rural
 residence and mothers with no education.
 
 **Grouping.** The five indicators are standardized and grouped with K-Means.
