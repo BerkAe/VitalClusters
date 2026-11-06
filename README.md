@@ -2,37 +2,37 @@
 
 Survey data on child health usually comes as huge tables that only a specialist can read. I wanted to see if anyone could look at the same data and quickly understand which places are struggling in similar ways.
 
-VitalClusters takes Kenya's 2022 Demographic and Health Survey, turns it into county-level numbers, groups the 47 counties into a few health risk profiles and shows the result in a small dashboard that explains each group in a simple language.
+VitalClusters takes Kenya's 2022 Demographic and Health Survey, turns it into county-level numbers, groups the 47 counties into a few health risk profiles and shows the result in a small dashboard that explains each group in simple language.
 
 I built it for DHS Hacks V2.
 
 ## What it does
 
 - Cleans the survey data and works out weighted rates for each county (stunting, missing the measles vaccine, poverty, rural residence, mothers with no education)
-- Tries 3 to 6 groups and picks the best number automatically
+- Tries 3 to 6 groups and picks the number automatically
 - Checks how stable the groups are by re-running the clustering on random subsets of counties
-- Shortly describes each group and shows how it differs from the average county
-- Flags counties that sit near the edge of a group
+- Describes each group shortly and shows how it differs from the average county
+- Marks counties that sit near the edge of a group
 
 ## What I found
 
-The data splits into 3 groups, and they were stable (0.96 on the stability check, silhouette 0.40):
+The data splits into 3 groups. They were stable (0.96 on the stability check) and moderately separated (silhouette 0.40):
 
-1. **Lower overall risk (13 counties):** mostly urban and wealthier, like Nairobi, Kiambu, Mombasa and Nakuru.
+1. **Lower overall risk (13 counties):** less rural and wealthier, like Nairobi, Kiambu, Mombasa and Nakuru.
 2. **In between (26 counties):** mostly rural, with better maternal education and vaccination.
 3. **Higher overall risk (8 counties):** mostly in the north, such as Mandera, Wajir, Turkana and West Pokot, with more poverty, more mothers with no education and more children missing the measles vaccine.
 
-These groups describe patterns, not causes. They also don't match every indicator: Kilifi has one of the highest stunting rates but sits in the middle group which is why the dashboard also shows each county's own numbers.
+These groups describe patterns, not causes. The third group is mainly defined by education, vaccination and poverty, and its stunting rate isn't much higher than the middle group's. The groups also don't match every indicator: Kilifi has the highest stunting rate in the country but sits in the middle group. That's why the dashboard also shows each county's own numbers.
 
 ## Run it yourself
 
-You need Python 3.8 or newer.
+Tested on Python 3.14.
 
 ```
-pip install pandas numpy scikit-learn plotly streamlit
+pip install -r requirements.txt
 ```
 
-Raw survey data isn't in this repo because of ethical reasons so you need to register at [dhsprogram.com](https://dhsprogram.com), request access, and download the Kenya 2022 Children's Recode in Stata format (`KEKR8CDT.ZIP`). And put the `.DTA` file in a folder called `data/`.
+The raw survey data isn't in this repo, because DHS data can't be redistributed. To get it, register at [dhsprogram.com](https://dhsprogram.com), request access, and download the Kenya 2022 Children's Recode in Stata format (`KEKR8CDT.ZIP`). Unzip it and put the `.DTA` file in a folder called `data/`.
 
 Then run these from the project folder:
 
@@ -42,7 +42,9 @@ python src/cluster.py
 streamlit run app.py
 ```
 
-The first script builds `county_indicators.csv`, the second makes the groups and writes the three files the dashboard reads. The CSVs are alredy in this repo so you can skip straight to `streamlit run app.py` if you just want to check the dashboard.
+The first script builds `county_indicators.csv`, the second makes the groups and writes the three files the dashboard reads. The CSVs are already in this repo, so if you just want to look at the dashboard you can skip straight to `streamlit run app.py`.
+
+Note: the dashboard has to be started with `streamlit run app.py`. Running `python app.py` will only print warnings.
 
 ## Files
 
@@ -54,9 +56,10 @@ The first script builds `county_indicators.csv`, the second makes the groups and
 ## Limits
 
 - It only covers children under 5, so these are child health profiles, not whole-population ones
+- Measles vaccination is only recorded up to about 36 months, so that rate covers children aged 12 to 36 months
 - With 47 counties, small differences between neighbouring counties don't mean much
 - Some counties have small samples for certain indicators, and the dashboard warns you about those
-- Recent illness (diarrhea, fever, cough) comes from a two-week recall in small samples and is very noisy. The dashboard shows it, but I left it out of the clustering because it made the groups unstable
+- Recent illness (diarrhea, fever, cough) comes from a two-week recall in small samples and is very noisy. The dashboard shows it, but I left it out of the clustering
 - Everything here is based on a single survey year
 
 ## What I'd do next
